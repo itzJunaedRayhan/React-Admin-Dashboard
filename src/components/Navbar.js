@@ -19,7 +19,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 )
 
 const Navbar = () => {
-  const { activeMenu, setActiveMenu, isClicked, setIsClicked, handleClick, screenSize, setScreenSize, currentColor, isOpen, setIsOpen } = useStateContext();
+  const { setActiveMenu, screenSize, setScreenSize, currentColor, isOpen, setIsOpen, isProfileOpen, setIsProfileOpen } = useStateContext();
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -40,7 +40,6 @@ const Navbar = () => {
   return (
     <div className="flex justify-between p-2 md:mx-6 relative">
       <NavButton title="Menu" customFunc={() => setActiveMenu((prevActiveMenu) => !prevActiveMenu)} color={currentColor} icon={<AiOutlineMenu />} dotColor="" />
-
       <div className='flex'>
         <TooltipComponent content="Cart" position="BottomCenter">
           <button onClick={() => setIsOpen(true)} type='button' style={{ color: currentColor }} className="relative text-xl rounded-full p-3 hover:bg-light-gray">
@@ -48,10 +47,10 @@ const Navbar = () => {
             {<FiShoppingCart />}
           </button>
         </TooltipComponent>
-        <NavButton title="Chat" customFunc={() => handleClick('chat')} color={currentColor} icon={<BsChatLeft />} dotColor="#03C9D7" />
-        <NavButton title="Notification" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} dotColor="#03C9D7" />
-        <TooltipComponent content="Profile" position='BottomCenter'>
-          <div className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg" onClick={() => handleClick('userProfile')}>
+        <NavButton title="Chat" color={currentColor} icon={<BsChatLeft />} dotColor="#03C9D7" />
+        <NavButton title="Notification" color={currentColor} icon={<RiNotification3Line />} dotColor="#03C9D7" />
+        <TooltipComponent content="Profile" position='BottomCenter' >
+          <div onClick={() => setIsProfileOpen(true)} className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
             <img className='rounded-full w-8 h-8' src={avatar} alt="Profile" />
             <p>
               <span className='text-gray-400 text-14'>Hi,</span>{' '} <span className='text-gray-400 font-bold ml-1 text-14'>Junaed</span>
@@ -60,9 +59,8 @@ const Navbar = () => {
           </div>
         </TooltipComponent>
         {isOpen && <Cart />}
-        {isClicked.chat && <Chat />}
-        {isClicked.notification && <Notification />}
-        {isClicked.userProfile && <UserProfile />}
+        {isProfileOpen && <UserProfile />}
+
       </div>
     </div>
   )
